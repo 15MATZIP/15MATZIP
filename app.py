@@ -34,9 +34,10 @@ def login():
         #userid_receive = request.form['userid']
         #userpw_receive = request.form['userpw']
         
-        doc = {"userid": "adsasdasda", "userpw": "efewf"}
+        doc = {"userid": "test", "userpw": "testpassword"}
         db.user.insert_one(doc)
-        
+        for i in db.user.find(): # 배포시 코드 지울 것
+            print(i)
         return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
     
 

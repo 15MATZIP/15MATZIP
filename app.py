@@ -7,6 +7,7 @@ from pymongo import MongoClient
 SECRET_KEY = 'SPARTA'
 
 # JWT 패키지를 사용합니다. (설치해야할 패키지 이름: PyJWT)
+
 # import jwt
 
 

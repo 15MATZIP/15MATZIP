@@ -71,5 +71,38 @@ def useridchek():
     return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
 
 
+# 게시판 목록
+@app.route('/board/list', methods=['GET'])
+def boardlist():
+    #title_receive = request.form['title_give']
+    return render_template('main.html')
+
+# 게시판 조회 (상세페이지)
+@app.route('/board/detail', methods=['GET'])
+def boarddetail():
+    #title_receive = request.form['title_give']
+    return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
+
+# 게시판 글생성
+@app.route('/board/create', methods=['POST','GET'])
+def boardcreate():
+    #title_receive = request.form['title_give']
+    if request.method == 'POST':
+        return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
+    
+    if request.method == 'GET':
+        return jsonify({'result':'success', 'msg': '이 요청은 GET!'})
+
+    
+# 게시판 글수정
+@app.route('/board/update', methods=['POST','GET']) 
+def boardupdate():
+    #title_receive = request.form['title_give']
+    if request.method == 'POST':
+        return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
+
+    if request.method == 'GET':
+        return jsonify({'result':'success', 'msg': '이 요청은 GET!'})
+
 if __name__ == '__main__':  
     app.run('0.0.0.0',port=5001,debug=True)

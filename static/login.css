@@ -43,9 +43,10 @@ body {
     width: 100%;
     margin-bottom: 5px;
     padding: 8px 12px;
-    border: 1px solid #dbdbdb;
+    border: 1px solid #000000;
     box-sizing: border-box;
     border-radius: 3px;
+    font-size: 0.6em;
 }
 
 .overlap-text {
@@ -102,7 +103,7 @@ body {
 }
 
 input:focus {
-    background-color: yellow;
+    background-color: rgb(255, 255, 255);
 }
 
 /* youtube link */
@@ -122,4 +123,11 @@ input:focus {
     color: #fff;
     text-transform: capitalize;
     letter-spacing: 1px;
+}
+
+.error{
+    font-size: 1px;
+    height: 20px;
+    color:red;
+    font-weight: 700;
 }

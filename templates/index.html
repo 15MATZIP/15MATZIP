@@ -5,14 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/login.css">
+    <link rel="stylesheet" type="text/css" href="/static/auth/login.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
-    <script src="static\register.js"></script>
+
+    <!-- js파일 가지고 오기 -->
+    <script src="/static/auth/register.js"></script>
+    <script src="/static/auth/login.js"></script>
+
     <title>15조 웹미니 프로젝트</title>
     <script>
         // 시작
@@ -53,33 +57,29 @@
     <div id="wrapper1" class="login">
         <div class="main-content">
             <div class="header">
-                <img src="static\맛집.png" />
+                <img src="/static/auth/맛집.png" />
             </div>
             <div class="l-part">
-                <input type="text" placeholder="Username" class="input-1" />
+                <input type="text" placeholder="Username" class="input-1" name="userid" />
                 <div class="overlap-text">
-                    <input type="password" placeholder="Password" class="input-2" />
+                    <input type="password" placeholder="Password" class="input-2" name="userpw" />
                     <a href="#">ㅋ</a>
                 </div>
-                <input type="button" value="Log in" class="btn" />
+                <input type="button" value="Log in" class="btn" onclick="userLogin();" />
             </div>
         </div>
         <div class="sub-content">
             <div class="s-part">
                 아이디 없음? <a href="javascript:showsign();">회원가입창이동</a>
             </div>
-            >>>>>>> 7625bf2ff6eabe37cf456228842161074e015acb
         </div>
-    </div>
-    <div class="sub-content">
-        <div class="s-part">아이디 없음? <a href="#">회원가입</a></div>
     </div>
     </div>
     <!-- 회원가입 창  -->
     <div id="wrapper2" class="register">
         <div class="main-content">
             <div class="header">
-                <img src="static\맛집.png" />
+                <img src="/static/auth/맛집.png" />
             </div>
             <div class="l-part">
                 <input type="text" placeholder="아이디(4~12자의 영문 대소문자와 숫자로만 입력)" class="input-1" id="RegisterUserId" />

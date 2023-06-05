@@ -15,36 +15,75 @@ client = MongoClient(
 )
 
 db = client.dbsparta
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 app = Flask(__name__)
+app.secret_key = "OurKey"
 
 @app.route('/')
 def home():
+
+    return redirect("/auth/login")
+
     return render_template('index.html')
     #환영페이지 필요없으면
     #return redirect("/login")
 
 # 로그인페이지(GET)
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/auth/login', methods=['GET', 'POST'])
 def login():
 
     if request.method == 'GET':
         #title_receive = request.args.get('title_give') title_give라는 데이터를 가지고옴
         next = request.args.get('next', '') # login 후 이동할 페이지 지정
+
+        user_list = list(db.user.find({}))
+        if len(user_list) == 0:
+            print('없음')
+        else :
+            for i in user_list:
+                print(i)
+
         return render_template('index.html') #jsonify({'result':'success', 'msg': '이 요청은 GET!'}), 
     else :
         # 로그인페이지(POST)
-        #userid_receive = request.form['userid']
-        #userpw_receive = request.form['userpw']
+        userid_receive = request.form['userid']
+        userpw_receive = request.form['userpw']
         
-        doc = {"userid": "adsasdasda", "userpw": "efewf"}
-        db.user.insert_one(doc)
-        
-        return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
+        pw_hash = hashlib.sha256(userpw_receive.encode('utf-8')).hexdigest()
+
+        doc = {"userid": userid_receive, "userpw": pw_hash}
+        user = db.user.find_one(doc, {'_id':False})
+        print("넘어왔나?", user)
+        if user != None:
+            session['loginUserId'] = user['userid']
+            print(session.get('loginUserId'))    #>> 세션 저장 확인
+            result = True
+            msg = f"{user['username']}님 환영합니다"
+        else:
+            result = False
+            msg = "로그인에 실패하였습니다."
+        return jsonify({"result": result, "msg": msg})
     
 
+@app.route('/auth/logout')
+def logout():
+    if session.get('loginUserId'):
+        isLogout = True
+
+        session.clear()
+
+        msg = '로그아웃 성공'
+
+    else:
+        isLogout = False
+
+        msg = "로그아웃 실패"
+        
+    return jsonify({"result": isLogout, "msg":msg})
+
+
 # 회원가입(POST)
-@app.route('/loginregister', methods=['POST'])
+@app.route('/auth/register', methods=['POST'])
 def loginregister():
     userid_receive = request.form['userid']
     userpw_receive = request.form['userpw']
@@ -68,6 +107,17 @@ def loginregister():
 def useridchek():
     #title_receive = request.form['title_give']
     return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
+
+# 회원 탈퇴
+@app.route('/auth/delete')
+def deleteId():
+    userid = session['loginUserId']
+
+    doc = {'userid': userid}
+    db.user.delete_one(doc)
+    msg = '회원탈퇴 성공'
+    
+    return jsonify({'msg': msg})
 
 
 if __name__ == '__main__':  

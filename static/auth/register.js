@@ -17,7 +17,7 @@ function loginregister() {
     formData.append("userid", userid);
     formData.append("userpw", userpw);
     formData.append("username", username);
-    fetch("/loginregister", { method: "POST", body: formData }).then((res) => res.json()).then((data) => { 
+    fetch("/auth/register", { method: "POST", body: formData }).then((res) => res.json()).then((data) => { 
         if(data["result"] == "success"){
             Swal.fire({
                 icon: 'success',            
@@ -110,7 +110,7 @@ function useridchek() {
     let formData = new FormData();
     let userid = $("#RegisterUserId ").val();
     formData.append("userid", userid);
-    fetch("/loginregister", { method: "POST", body: formData })
+    fetch("/auth/register", { method: "POST", body: formData })
         .then((res) => res.json())
         .then((data) => { });
 }
@@ -119,6 +119,17 @@ function usernamechek() {
     let formData = new FormData();
     let userid = $("#RegisterUserName ").val();
     formData.append("username", username);
-    fetch("/loginregister", { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+    fetch("/auth/register", { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
     });
+}
+
+function deleteUser() {
+
+    fetch("/auth/delete")
+        .then((res) => res.json())
+        .then((data) => {
+            alert(data['msg'])
+            location.href = "/"
+
+        });
 }

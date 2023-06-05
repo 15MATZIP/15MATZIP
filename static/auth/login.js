@@ -1,3 +1,16 @@
+// 로그인 알림창 (Swal)
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'center-center',
+    showConfirmButton: false,
+    timer: 1000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+})
+//로그인
 function userLogin() {
 
     // form 태그 데이터를 받아옴
@@ -15,16 +28,24 @@ function userLogin() {
             let isLogin = data['result']
             
             if (isLogin) {
-                alert(data['msg'])
-                location.href = "/board/list"
+                Toast.fire({
+                    icon: 'success',
+                    title: data["msg"]
+                }).then(function(){
+                    location.href = "/board/list";
+                });               
             } else {
-                alert(data['msg'])
-                location.reload();
+                Toast.fire({
+                    icon: 'error',
+                    title: data["msg"]
+                }).then(function(){
+                    location.reload();
+                });
             }
         });
     
 }
-
+// 로그아웃
 function userLogout() {
     
     fetch("/auth/logout")
@@ -33,11 +54,19 @@ function userLogout() {
             let isLogout = data['result']
 
             if (isLogout) {
-                alert(data['msg'])
-                location.href = "/"
+                Toast.fire({
+                    icon: 'success',
+                    title: data["msg"]
+                }).then(function(){
+                    location.href = "/"
+                });  
             } else {
-                alert(data['msg'])
-                location.reload();
+                Toast.fire({
+                    icon: 'success',
+                    title: data["msg"]
+                }).then(function(){
+                    location.reload();
+                });  
             }
         });
 }

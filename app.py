@@ -17,14 +17,15 @@ client = MongoClient(
 db = client.dbsparta
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 app = Flask(__name__)
-app.secret_key = "OurKey"
+app.secret_key = os.getenv("OurKey") #가려야함
 
+# 시작 페이지
 @app.route('/')
 def home():
 
     return redirect("/auth/login")
 
-    return render_template('index.html')
+    #return render_template('index.html')
     #환영페이지 필요없으면
     #return redirect("/login")
 
@@ -64,7 +65,7 @@ def login():
             msg = "로그인에 실패하였습니다."
         return jsonify({"result": result, "msg": msg})
     
-
+# 로그아웃
 @app.route('/auth/logout')
 def logout():
     if session.get('loginUserId'):
@@ -103,10 +104,18 @@ def loginregister():
 
 
 # 아이디 중복확인(POST)
-@app.route('/useridchek', methods=['POST'])
+@app.route('/auth/useridcheck', methods=['POST'])
 def useridchek():
-    #title_receive = request.form['title_give']
-    return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
+    userid_receive = request.form['userid']
+    user = db.user.find_one({'userid': userid_receive})
+    print(user)
+    if user is not None:
+        result = False
+    else :
+        result = True
+        
+    
+    return jsonify({'result': result})
 
 # 회원 탈퇴
 @app.route('/auth/delete')

@@ -8,12 +8,15 @@ function loginregister() {
     if (!checkUserId(userid)) {
         return false;
     }
+    if (!useridchek(userid)){
+        return false;
+    }
     if (!checkName(username)){
         return false;
     }
     if (!checkPassword(userid, userpw, userpw2)){
         return false;
-    }
+    }  
     formData.append("userid", userid);
     formData.append("userpw", userpw);
     formData.append("username", username);
@@ -106,23 +109,25 @@ function checkPassword(id, password1, password2) {
     return true; //확인이 완료되었을 때
 }
 // 아이디중복확인
-function useridchek() {
+function useridchek(userid) {
     let formData = new FormData();
-    let userid = $("#RegisterUserId ").val();
     formData.append("userid", userid);
-    fetch("/auth/register", { method: "POST", body: formData })
+    fetch("/auth/useridcheck", { method: "POST", body: formData })
         .then((res) => res.json())
-        .then((data) => { });
+        .then((data) => { 
+            if(data['result'] == true){
+                console.log(data['result'])
+                $('#idError').text('사용가능한 아이디 입니다.');
+                $('#idError').css("color","green");                                             
+                return true;
+            }else{
+                console.log(data['result'])
+                $('#idError').text('사용중인 아이디 입니다.');
+                return false;
+            }
+        });
 }
-// 닉네임중복확인
-function usernamechek() {
-    let formData = new FormData();
-    let userid = $("#RegisterUserName ").val();
-    formData.append("username", username);
-    fetch("/auth/register", { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-    });
-}
-
+// 회원 탈퇴
 function deleteUser() {
 
     fetch("/auth/delete")

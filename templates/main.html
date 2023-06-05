@@ -1,35 +1,86 @@
 <!DOCTYPE html>
 
 <html class="home blog no-js" lang="en-US">
-  <head>
-    <title>MAT.ZIP | HOME</title>
 
-    <meta charset="UTF-8" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      type="text/css"
-      media="all"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Amatic+SC%3A400%2C700%7CLato%3A400%2C700%2C400italic%2C700italic&amp;ver=4.9.8"
-      type="text/css"
-      media="screen"
-    />
-    <link
-      rel="stylesheet"
-      href="../static/style.css"
-      type="text/css"
-      media="screen"
-    />
-    <link
-      rel="stylesheet"
-      href="../static/ie.css"
-      type="text/css"
-      media="print"
-    />
-    <!--[if (lt IE 9) & (!IEMobile)]>
+<head>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <title>MAT.ZIP | HOME</title>
+
+  <script>
+    $(document).ready(function () {
+      listing();
+    });
+
+    function listing() {
+      fetch('/list').then((res) => res.json()).then((data) => {
+        let rows = data['result']
+        $('.sticky-inner').empty()
+        rows.forEach((a) => {
+          // let image = a['image']
+          let title = a['title']
+          let address = a['address']
+          // let comment = a['comment']
+          let star = a['star']
+          let date = a['date']
+
+          let star_repeat = '⭐'.repeat(star)
+
+          let temp_html = `<aside class="home-sticky-post post has-post-thumbnail sticky">
+                                      <span class="post-image">
+                                        <a href="#">
+                                          <img
+                                            width="502"
+                                            height="502"
+                                            src="images/Apothecary.jpg"
+                                            class="attachment-sticky size-sticky"
+                                            alt=""
+                                          />
+                                        </a>
+                                      </span>
+
+                                      <div class="inner">
+                                        <h3 class="entry-title">
+                                          <a href="#">${title}</a>
+                                        </h3>
+                                        
+                                        <ul class="meta top">
+                                          <li class="time">
+                                            <a href="#" title="The Apothecary">
+                                              <time class="post-date updated" datetime="2015-01-31"
+                                                >${address}</time
+                                              >
+                                            </a>
+                                          </li>
+
+                                          <li class="time">
+                                            <a href="#" title="The Apothecary">
+                                              <time class="post-date updated" datetime="2015-01-31"
+                                                >${date}</time
+                                              >
+                                            </a>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </aside>`
+
+          $('.sticky-inner').append(temp_html)
+        })
+      })
+    }
+
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    type="text/css" media="all" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Amatic+SC%3A400%2C700%7CLato%3A400%2C700%2C400italic%2C700italic&amp;ver=4.9.8"
+    type="text/css" media="screen" />
+  <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="../static/ie.css" type="text/css" media="print" />
+  <!--[if (lt IE 9) & (!IEMobile)]>
       <link
         rel="stylesheet"
         id="lt-ie9-css"
@@ -38,365 +89,299 @@
         media="screen"
       />
     <![endif]-->
-    <script src="js/jquery-3.0.0.min.js"></script>
-    <script src="js/jquery-migrate-3.0.1.min.js"></script>
-    <!--[if lt IE 9]>
+  <!-- <script src="js/jquery-3.0.0.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script> -->
+
+  <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  </head>
-  <body class="home sticky-menu sidebar-off" id="top">
-    <header class="header">
-      <div class="header-wrap">
-        <div class="logo plain logo-left">
-          <div class="site-title">
-            <a href="index.html" title="Go to Home">MAT.ZIP</a>
+</head>
+
+<body class="home sticky-menu sidebar-off" id="top">
+  <header class="header">
+    <div class="header-wrap">
+      <div class="logo plain logo-left">
+        <div class="site-title">
+          <a href="/board/list" title="Go to Home">MAT.ZIP</a>
+        </div>
+      </div>
+      <!-- /logo -->
+
+      <nav id="nav" role="navigation">
+        <div class="table">
+          <div class="table-cell">
+            <ul id="menu-menu-1">
+              <li class="menu-item">
+                <a href="/board/list">Home</a>
+              </li>
+              <li class="menu-item">
+                <a href="/board/create">CREATE</a>
+              </li>
+              <!-- 로그아웃 입니다. -->
+              <li class="menu-item">
+                <a href="/auth/Logout">Logout</a>
+              </li>
+            </ul>
           </div>
         </div>
-        <!-- /logo -->
+      </nav>
+      <a href="#nav" class="menu-trigger"><i class="fa fa-bars"></i></a>
+    </div>
+  </header>
 
-        <nav id="nav" role="navigation">
-          <div class="table">
-            <div class="table-cell">
-              <ul id="menu-menu-1">
-                <li class="menu-item">
-                  <a href="#">Home</a>
-                </li>
-                <li class="menu-item">
-                  <a href="#">About me</a>
-                </li>
-                <!-- 로그아웃 입니다. -->
-                <li class="menu-item">
-                  <a href="#">Logout</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-        <a href="#nav" class="menu-trigger"><i class="fa fa-bars"></i></a>
+  <div class="hero" style="background-image: url('images/lead.jpg'); text-align: right">
+    <div class="hero-inner">
+      <div class="inner">
+        <h1><span class="border border-top border-bottom">MAT.ZIP</span></h1>
+        <div class="hero-line-one"></div>
+        <div class="hero-line-two">
+          <span class="border border-bottom"><a href="https://freehtml5.co" style="color: #fff">Introduce t best taste!
+            </a></span>
+        </div>
       </div>
-    </header>
 
-    <div
-      class="hero"
-      style="background-image: url('images/lead.jpg'); text-align: right"
-    >
-      <div class="hero-inner">
+      <a class="more-arrow" href="#content"><i class="fa fa-chevron-down"></i><span>Scroll Down</span></a>
+    </div>
+  </div>
+  <div class="home-sticky" id="content">
+    <h2 class="home-sticky-title">It's life food</h2>
+
+    <div class="sticky-inner">
+      <aside class="home-sticky-post post has-post-thumbnail sticky">
+        <span class="post-image">
+          <a href="#">
+            <img width="502" height="502" src="images/Lollipop-502x502.jpg" class="attachment-sticky size-sticky"
+              alt="" />
+          </a>
+        </span>
+
         <div class="inner">
-          <h1><span class="border border-top border-bottom">MAT.ZIP</span></h1>
-          <div class="hero-line-one"></div>
-          <div class="hero-line-two">
-            <span class="border border-bottom"
-              ><a href="https://freehtml5.co" style="color: #fff"
-                >Introduce t best taste!
-              </a></span
-            >
-          </div>
-        </div>
+          <h3 class="entry-title">
+            <a href="#">게시글 제목임</a>
+          </h3>
 
-        <a class="more-arrow" href="#content"
-          ><i class="fa fa-chevron-down"></i><span>Scroll Down</span></a
-        >
-      </div>
+          <ul class="meta top">
+            <li class="time">
+              <a href="#">
+                <time class="post-date updated" datetime="2015-02-02">생성일자임</time>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <aside class="home-sticky-post post has-post-thumbnail sticky">
+        <span class="post-image">
+          <a href="#">
+            <img width="502" height="502" src="images/Apothecary.jpg" class="attachment-sticky size-sticky" alt="" />
+          </a>
+        </span>
+
+        <div class="inner">
+          <h3 class="entry-title">
+            <a href="#">게시글 제목임</a>
+          </h3>
+
+          <ul class="meta top">
+            <li class="time">
+              <a href="#" title="The Apothecary">
+                <time class="post-date updated" datetime="2015-01-31">생성일자임</time>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <aside class="home-sticky-post post has-post-thumbnail sticky">
+        <span class="post-image">
+          <a href="#">
+            <img width="502" height="502" src="images/Flowers.jpg" class="attachment-sticky size-sticky" alt="" />
+          </a>
+        </span>
+
+        <div class="inner">
+          <h3 class="entry-title">
+            <a href="#">게시글 제목임</a>
+          </h3>
+
+          <ul class="meta top">
+            <li class="time">
+              <a href="#">
+                <time class="post-date updated" datetime="2015-01-25">생성일자임</time>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <aside class="home-sticky-post post has-post-thumbnail sticky">
+        <span class="post-image">
+          <a href="#"><img width="502" height="502" src="images/Sun.jpg" class="attachment-sticky size-sticky" alt="" />
+          </a>
+        </span>
+
+        <div class="inner">
+          <h3 class="entry-title">
+            <a href="#">게시글 제목임</a>
+          </h3>
+
+          <ul class="meta top">
+            <li class="time">
+              <a href="#" title="The Sunny Day">
+                <time class="post-date updated" datetime="2015-01-21">생성일자임</time>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <aside class="home-sticky-post post has-post-thumbnail sticky">
+        <span class="post-image">
+          <a href="#">
+            <img width="502" height="502" src="images/Meeting.jpg" class="attachment-sticky size-sticky" alt="" />
+          </a>
+        </span>
+
+        <div class="inner">
+          <h3 class="entry-title">
+            <a href="#">게시글 제목임</a>
+          </h3>
+
+          <ul class="meta top">
+            <li class="time">
+              <a href="#">
+                <time class="post-date updated" datetime="2015-01-02">생성일자임</time>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <aside class="home-sticky-post post has-post-thumbnail sticky">
+        <span class="post-image">
+          <a href="#">
+            <img width="502" height="502" src="images/Bridge.jpg" class="attachment-sticky size-sticky" alt="" />
+          </a>
+        </span>
+
+        <div class="inner">
+          <h3 class="entry-title">
+            <a href="#">게시글 제목임</a>
+          </h3>
+
+          <ul class="meta top">
+            <li class="time">
+              <a href="#">
+                <time class="post-date updated" datetime="2014-12-31">생성일자임</time>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
     </div>
-    <div class="home-sticky" id="content">
-      <h2 class="home-sticky-title">It's life food</h2>
+  </div>
 
-      <div class="sticky-inner">
-        <aside class="home-sticky-post post has-post-thumbnail sticky">
-          <span class="post-image">
-            <a href="#">
-              <img
-                width="502"
-                height="502"
-                src="images/Lollipop-502x502.jpg"
-                class="attachment-sticky size-sticky"
-                alt=""
-              />
-            </a>
-          </span>
+  <div class="footer-widgets widget-count-4">
+    <div class="wrap">
+      <div class="mt-about-you-widget">
+        <div class="widget footer">
+          <img class="mt-about-avatar" src="images/about-me.jpg" />
 
-          <div class="inner">
-            <h3 class="entry-title">
-              <a href="#">게시글 제목임</a>
-            </h3>
+          <h4>김민희</h4>
 
-            <ul class="meta top">
-              <li class="time">
-                <a href="#">
-                  <time class="post-date updated" datetime="2015-02-02"
-                    >생성일자임</time
-                  >
-                </a>
-              </li>
-            </ul>
+          <div class="mt-about-bio">
+            <p>
+              Hi, my name is Clare and I&#039;m a serial blogger. I love life
+              and more than anything in the whole wide world, I love taking
+              photographs. Oh and did I mention, I quite like blogging?
+            </p>
           </div>
-        </aside>
-
-        <aside class="home-sticky-post post has-post-thumbnail sticky">
-          <span class="post-image">
-            <a href="#">
-              <img
-                width="502"
-                height="502"
-                src="images/Apothecary.jpg"
-                class="attachment-sticky size-sticky"
-                alt=""
-              />
-            </a>
-          </span>
-
-          <div class="inner">
-            <h3 class="entry-title">
-              <a href="#">게시글 제목임</a>
-            </h3>
-
-            <ul class="meta top">
-              <li class="time">
-                <a href="#" title="The Apothecary">
-                  <time class="post-date updated" datetime="2015-01-31"
-                    >생성일자임</time
-                  >
-                </a>
-              </li>
-            </ul>
-          </div>
-        </aside>
-
-        <aside class="home-sticky-post post has-post-thumbnail sticky">
-          <span class="post-image">
-            <a href="#">
-              <img
-                width="502"
-                height="502"
-                src="images/Flowers.jpg"
-                class="attachment-sticky size-sticky"
-                alt=""
-              />
-            </a>
-          </span>
-
-          <div class="inner">
-            <h3 class="entry-title">
-              <a href="#">게시글 제목임</a>
-            </h3>
-
-            <ul class="meta top">
-              <li class="time">
-                <a href="#">
-                  <time class="post-date updated" datetime="2015-01-25"
-                    >생성일자임</time
-                  >
-                </a>
-              </li>
-            </ul>
-          </div>
-        </aside>
-
-        <aside class="home-sticky-post post has-post-thumbnail sticky">
-          <span class="post-image">
-            <a href="#"
-              ><img
-                width="502"
-                height="502"
-                src="images/Sun.jpg"
-                class="attachment-sticky size-sticky"
-                alt=""
-              />
-            </a>
-          </span>
-
-          <div class="inner">
-            <h3 class="entry-title">
-              <a href="#">게시글 제목임</a>
-            </h3>
-
-            <ul class="meta top">
-              <li class="time">
-                <a href="#" title="The Sunny Day">
-                  <time class="post-date updated" datetime="2015-01-21"
-                    >생성일자임</time
-                  >
-                </a>
-              </li>
-            </ul>
-          </div>
-        </aside>
-
-        <aside class="home-sticky-post post has-post-thumbnail sticky">
-          <span class="post-image">
-            <a href="#">
-              <img
-                width="502"
-                height="502"
-                src="images/Meeting.jpg"
-                class="attachment-sticky size-sticky"
-                alt=""
-              />
-            </a>
-          </span>
-
-          <div class="inner">
-            <h3 class="entry-title">
-              <a href="#">게시글 제목임</a>
-            </h3>
-
-            <ul class="meta top">
-              <li class="time">
-                <a href="#">
-                  <time class="post-date updated" datetime="2015-01-02"
-                    >생성일자임</time
-                  >
-                </a>
-              </li>
-            </ul>
-          </div>
-        </aside>
-
-        <aside class="home-sticky-post post has-post-thumbnail sticky">
-          <span class="post-image">
-            <a href="#">
-              <img
-                width="502"
-                height="502"
-                src="images/Bridge.jpg"
-                class="attachment-sticky size-sticky"
-                alt=""
-              />
-            </a>
-          </span>
-
-          <div class="inner">
-            <h3 class="entry-title">
-              <a href="#">게시글 제목임</a>
-            </h3>
-
-            <ul class="meta top">
-              <li class="time">
-                <a href="#">
-                  <time class="post-date updated" datetime="2014-12-31"
-                    >생성일자임</time
-                  >
-                </a>
-              </li>
-            </ul>
-          </div>
-        </aside>
+        </div>
       </div>
-    </div>
+      <div class="mt-about-you-widget">
+        <div class="widget footer">
+          <img class="mt-about-avatar" src="images/about-me.jpg" />
 
-    <div class="footer-widgets widget-count-4">
-      <div class="wrap">
-        <div class="mt-about-you-widget">
-          <div class="widget footer">
-            <img class="mt-about-avatar" src="images/about-me.jpg" />
+          <h4>최시우</h4>
 
-            <h4>김민희</h4>
-
-            <div class="mt-about-bio">
-              <p>
-                Hi, my name is Clare and I&#039;m a serial blogger. I love life
-                and more than anything in the whole wide world, I love taking
-                photographs. Oh and did I mention, I quite like blogging?
-              </p>
-            </div>
+          <div class="mt-about-bio">
+            <p>
+              Hi, my name is Clare and I&#039;m a serial blogger. I love life
+              and more than anything in the whole wide world, I love taking
+              photographs. Oh and did I mention, I quite like blogging?
+            </p>
           </div>
         </div>
-        <div class="mt-about-you-widget">
-          <div class="widget footer">
-            <img class="mt-about-avatar" src="images/about-me.jpg" />
+      </div>
+      <div class="mt-about-you-widget">
+        <div class="widget footer">
+          <img class="mt-about-avatar" src="images/about-me.jpg" />
 
-            <h4>최시우</h4>
+          <h4>홍승현</h4>
 
-            <div class="mt-about-bio">
-              <p>
-                Hi, my name is Clare and I&#039;m a serial blogger. I love life
-                and more than anything in the whole wide world, I love taking
-                photographs. Oh and did I mention, I quite like blogging?
-              </p>
-            </div>
+          <div class="mt-about-bio">
+            <p>
+              Hi, my name is Clare and I&#039;m a serial blogger. I love life
+              and more than anything in the whole wide world, I love taking
+              photographs. Oh and did I mention, I quite like blogging?
+            </p>
           </div>
         </div>
-        <div class="mt-about-you-widget">
-          <div class="widget footer">
-            <img class="mt-about-avatar" src="images/about-me.jpg" />
+      </div>
+      <div class="mt-about-you-widget">
+        <div class="widget footer">
+          <img class="mt-about-avatar" src="images/about-me.jpg" />
 
-            <h4>홍승현</h4>
+          <h4>박준영</h4>
 
-            <div class="mt-about-bio">
-              <p>
-                Hi, my name is Clare and I&#039;m a serial blogger. I love life
-                and more than anything in the whole wide world, I love taking
-                photographs. Oh and did I mention, I quite like blogging?
-              </p>
-            </div>
+          <div class="mt-about-bio">
+            <p>
+              Hi, my name is Clare and I&#039;m a serial blogger. I love life
+              and more than anything in the whole wide world, I love taking
+              photographs. Oh and did I mention, I quite like blogging?
+            </p>
           </div>
         </div>
-        <div class="mt-about-you-widget">
-          <div class="widget footer">
-            <img class="mt-about-avatar" src="images/about-me.jpg" />
+      </div>
+      <div class="mt-about-you-widget">
+        <div class="widget footer">
+          <img class="mt-about-avatar" src="images/about-me.jpg" />
 
-            <h4>박준영</h4>
+          <h4>윤문열</h4>
 
-            <div class="mt-about-bio">
-              <p>
-                Hi, my name is Clare and I&#039;m a serial blogger. I love life
-                and more than anything in the whole wide world, I love taking
-                photographs. Oh and did I mention, I quite like blogging?
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="mt-about-you-widget">
-          <div class="widget footer">
-            <img class="mt-about-avatar" src="images/about-me.jpg" />
-
-            <h4>윤문열</h4>
-
-            <div class="mt-about-bio">
-              <p>
-                Hi, my name is Clare and I&#039;m a serial blogger. I love life
-                and more than anything in the whole wide world, I love taking
-                photographs. Oh and did I mention, I quite like blogging?
-              </p>
-            </div>
+          <div class="mt-about-bio">
+            <p>
+              Hi, my name is Clare and I&#039;m a serial blogger. I love life
+              and more than anything in the whole wide world, I love taking
+              photographs. Oh and did I mention, I quite like blogging?
+            </p>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <footer class="footer">
-      <div class="footer-wrap">
-        <div id="footer-text">&copy; 2023 MAT.ZIP</div>
+  <footer class="footer">
+    <div class="footer-wrap">
+      <div id="footer-text">&copy; 2023 MAT.ZIP</div>
 
-        <a href="#top" id="btt">Top <i class="fa fa-chevron-up"></i></a>
-      </div>
-    </footer>
-
-    <div id="topsearch">
-      <div class="table">
-        <div class="table-cell">
-          <form
-            role="search"
-            method="get"
-            class="searchform"
-            action="index.html"
-          >
-            <div>
-              <input
-                type="text"
-                value=""
-                name="s"
-                class="s"
-                placeholder="Type and hit enter"
-              />
-              <input type="submit" class="searchsubmit" value="Search" />
-            </div>
-          </form>
-        </div>
-      </div>
-      <a href="#topsearch" class="search-trigger"
-        ><i class="fa fa-times"></i
-      ></a>
+      <a href="#top" id="btt">Top <i class="fa fa-chevron-up"></i></a>
     </div>
-  </body>
+  </footer>
+
+  <div id="topsearch">
+    <div class="table">
+      <div class="table-cell">
+        <form role="search" method="get" class="searchform" action="index.html">
+          <div>
+            <input type="text" value="" name="s" class="s" placeholder="Type and hit enter" />
+            <input type="submit" class="searchsubmit" value="Search" />
+          </div>
+        </form>
+      </div>
+    </div>
+    <a href="#topsearch" class="search-trigger"><i class="fa fa-times"></i></a>
+  </div>
+</body>
+
 </html>

@@ -2,7 +2,7 @@ import dotenv
 import os
 from pymongo import MongoClient
 
-
+import datetime as dt
 
 import hashlib
 
@@ -74,8 +74,18 @@ def useridchek():
 # 게시판 목록
 @app.route('/board/list', methods=['GET'])
 def boardlist():
-    #title_receive = request.form['title_give']
+    # title_receive = request.form['title_give']
+    # all_favorites = list(db.favorites.find({},{'_id':False}))
+    # return jsonify({'result':all_favorites})
     return render_template('main.html')
+
+@app.route('/list', methods=['GET'])
+def getlist():
+    # title_receive = request.form['title_give']
+    all_favorites = list(db.favorites.find({},{'_id':False}))
+    return jsonify({'result':all_favorites})
+    
+
 
 # 게시판 조회 (상세페이지)
 @app.route('/board/detail', methods=['GET'])
@@ -83,15 +93,36 @@ def boarddetail():
     #title_receive = request.form['title_give']
     return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
 
-# 게시판 글생성
-@app.route('/board/create', methods=['POST','GET'])
-def boardcreate():
-    #title_receive = request.form['title_give']
-    if request.method == 'POST':
-        return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
+
+# 게시판 글생성(POST)
+@app.route("/board/create", methods=["POST"])
+def mars_post():
+    title_receive = request.form['title_give']
+    address_receive = request.form['address_give']
+    star_receive = request.form['star_give']
+    comment_receive = request.form['comment_give']
+    createday = dt.datetime.now().replace(microsecond=0)
     
-    if request.method == 'GET':
-        return jsonify({'result':'success', 'msg': '이 요청은 GET!'})
+    
+    doc = {
+        'title':title_receive,
+        'address':address_receive,
+        'star':star_receive,
+        'comment':comment_receive,
+        'date':createday
+        
+    }
+    db.favorites.insert_one(doc) 
+
+    return jsonify({'msg':'저장완료!'})
+
+# 게시판 글생성(GET)
+@app.route("/board/create", methods=["GET"])
+def mars_get():
+    all_favorites = list(db.favorites.find({},{'_id':False}))
+    return render_template('post.html')
+ 
+
 
     
 # 게시판 글수정

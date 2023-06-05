@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="home blog no-js" lang="en-US">
+
+<head>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <title>MAT.ZIP | HOME</title>
+
+  <style>
+    .mypost {
+
+      width: 500px;
+      margin: 20px auto 20px auto;
+      padding: 20px 20px 20px 20px;
+
+      box-shadow: 0px 0px 3px 0px gray;
+    }
+
+    .mybtn {
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      margin-top: 20px;
+    }
+  </style>
+
+  <script>
+     $(document).ready(function () {
+            listing();
+        });
+
+
+
+        // POST
+        function save_order() {
+            let title = $('#title').val() // id가 title 요소의 값을 가져와서 그걸 title이라고 하겠다
+            let address = $('#address').val() 
+            let star= $('#star').val()
+            let comment = $('#comment').val()
+            // 날짜..?
+            
+            let formData = new FormData();
+            formData.append("title_give", title)
+            formData.append("address_give", address)
+            formData.append("star_give", star)
+            formData.append("comment_give", comment)
+
+            fetch('/board/create', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                alert(data["msg"]);
+                location.href = '/board/list'
+            });
+        }
+    </script>
+
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    type="text/css" media="all" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Amatic+SC%3A400%2C700%7CLato%3A400%2C700%2C400italic%2C700italic&amp;ver=4.9.8"
+    type="text/css" media="screen" />
+  <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="../static/ie.css" type="text/css" media="print" />
+  <!--[if (lt IE 9) & (!IEMobile)]>
+      <link
+        rel="stylesheet"
+        id="lt-ie9-css"
+        href="ie.css"
+        type="text/css"
+        media="screen"
+      />
+    <![endif]-->
+  <script src="js/jquery-3.0.0.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<body class="home sticky-menu sidebar-off" id="top">
+  <header class="header">
+    <div class="header-wrap">
+      <div class="logo plain logo-left">
+        <div class="site-title">
+          <a href="/board/list" title="Go to Home">MAT.ZIP</a>
+        </div>
+      </div>
+      <!-- /logo -->
+
+      <nav id="nav" role="navigation">
+        <div class="table">
+          <div class="table-cell">
+            <ul id="menu-menu-1">
+              <li class="menu-item">
+                <a href="/board/list">Home</a>
+              </li>
+              <li class="menu-item">
+                <a href="/board/create">CREATE</a>
+              </li>
+              <!-- 로그아웃 입니다. -->
+              <li class="menu-item">
+                <a href="/auth/Logout">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <a href="#nav" class="menu-trigger"><i class="fa fa-bars"></i></a>
+    </div>
+  </header>
+
+  <div class="hero" style="background-image: url('images/lead.jpg'); text-align: right">
+    <div class="hero-inner">
+      <div class="inner">
+        <h1><span class="border border-top border-bottom">MAT.ZIP</span></h1>
+        <div class="hero-line-one"></div>
+        <div class="hero-line-two">
+          <span class="border border-bottom"><a href="https://freehtml5.co" style="color: #fff">Introduce t best taste!
+            </a></span>
+        </div>
+      </div>
+
+      <a class="more-arrow" href="#content"><i class="fa fa-chevron-down"></i><span>Scroll Down</span></a>
+    </div>
+  </div>
+  <div class="home-sticky" id="content">
+    <h2 class="home-sticky-title">It's life food</h2>
+  </div>
+
+  <div class="mypost">
+
+    <div class="form-floating">
+
+      <div class="order-info">
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">이름</span>
+          <input id="title" type="text" class="form-control" />
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">위치 정보</span>
+          <input id="address" type="text" class="form-control" />
+        </div>
+
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="inputGroupSelect01">⭐</label>
+          <select class="form-select" id="star">
+            <option selected>-- 선택하기 --</option>
+            <option value="1">⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="5">⭐⭐⭐⭐⭐</option>
+          </select>
+        </div>
+
+        <div class="form-floating">
+          <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
+          <label for="floatingTextarea2">코멘트</label>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="mybtn">
+      <button onclick="save_order()" type="button" class="btn btn-warning mybtn">
+        기록하기
+      </button>
+    </div>
+
+  </div>
+
+  <div class="footer-widgets widget-count-4">
+    <div class="wrap">
+      <div class="mt-about-you-widget">
+        <div class="widget footer">
+          <img class="mt-about-avatar" src="images/about-me.jpg" />
+
+          <h4>김민희</h4>
+
+          <div class="mt-about-bio">
+            <p>
+              Hi, my name is Clare and I&#039;m a serial blogger. I love life
+              and more than anything in the whole wide world, I love taking
+              photographs. Oh and did I mention, I quite like blogging?
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-about-you-widget">
+        <div class="widget footer">
+          <img class="mt-about-avatar" src="images/about-me.jpg" />
+
+          <h4>최시우</h4>
+
+          <div class="mt-about-bio">
+            <p>
+              Hi, my name is Clare and I&#039;m a serial blogger. I love life
+              and more than anything in the whole wide world, I love taking
+              photographs. Oh and did I mention, I quite like blogging?
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-about-you-widget">
+        <div class="widget footer">
+          <img class="mt-about-avatar" src="images/about-me.jpg" />
+
+          <h4>홍승현</h4>
+
+          <div class="mt-about-bio">
+            <p>
+              Hi, my name is Clare and I&#039;m a serial blogger. I love life
+              and more than anything in the whole wide world, I love taking
+              photographs. Oh and did I mention, I quite like blogging?
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-about-you-widget">
+        <div class="widget footer">
+          <img class="mt-about-avatar" src="images/about-me.jpg" />
+
+          <h4>박준영</h4>
+
+          <div class="mt-about-bio">
+            <p>
+              Hi, my name is Clare and I&#039;m a serial blogger. I love life
+              and more than anything in the whole wide world, I love taking
+              photographs. Oh and did I mention, I quite like blogging?
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-about-you-widget">
+        <div class="widget footer">
+          <img class="mt-about-avatar" src="images/about-me.jpg" />
+
+          <h4>윤문열</h4>
+
+          <div class="mt-about-bio">
+            <p>
+              Hi, my name is Clare and I&#039;m a serial blogger. I love life
+              and more than anything in the whole wide world, I love taking
+              photographs. Oh and did I mention, I quite like blogging?
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-wrap">
+      <div id="footer-text">&copy; 2023 MAT.ZIP</div>
+
+      <a href="#top" id="btt">Top <i class="fa fa-chevron-up"></i></a>
+    </div>
+  </footer>
+
+  <div id="topsearch">
+    <div class="table">
+      <div class="table-cell">
+        <form role="search" method="get" class="searchform" action="index.html">
+          <div>
+            <input type="text" value="" name="s" class="s" placeholder="Type and hit enter" />
+            <input type="submit" class="searchsubmit" value="Search" />
+          </div>
+        </form>
+      </div>
+    </div>
+    <a href="#topsearch" class="search-trigger"><i class="fa fa-times"></i></a>
+  </div>
+</body>
+
+</html>

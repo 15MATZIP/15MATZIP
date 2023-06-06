@@ -102,9 +102,9 @@ body {
     font-weight: normal;
 }
 
-input:focus {
+/* input:focus {
     background-color: rgb(255, 255, 255);
-}
+} */
 
 /* youtube link */
 .youtube {

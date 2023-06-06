@@ -87,7 +87,6 @@ def logout():
 # 회원가입(POST)
 @app.route('/auth/register', methods=['POST'])
 def loginregister():
-    print('sssssssssssss')
     userid_receive = request.form['userid']
     userpw_receive = request.form['userpw']
     username_receive = request.form['username']
@@ -180,9 +179,6 @@ def mars_post():
 def mars_get():
     all_favorites = list(db.favorites.find({},{'_id':False}))
     return render_template('post.html')
- 
-
-
     
 # 게시판 글수정
 @app.route('/board/update', methods=['POST','GET']) 

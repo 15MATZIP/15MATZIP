@@ -1,30 +1,27 @@
+
 // 회원가입
 async function loginregister() {
+    $('.error').text("")
     let formData = new FormData();
     let userid = $("#RegisterUserId ").val();
     let username = $("#RegisterUserName ").val();
     let userpw = $("#RegisterUserPw ").val();
     let userpw2 = $("#RegisterUserPwChek").val();
-    var result = await useridchek(userid)
     if (!checkUserId(userid)) {
         return false;
     }
-    if (!result){ 
-        console.log('1')
+    if (!await useridchek(userid)){ 
         return false;
     }
     if (!checkName(username)){
-        console.log('2')
         return false;
     }
     if (!checkPassword(userid, userpw, userpw2)){
-        console.log('2')
         return false;
     }  
     formData.append("userid", userid);
     formData.append("userpw", userpw);
     formData.append("username", username);
-    console.log("gdgdgdgdgdg")
     fetch("/auth/register", { method: "POST", body: formData }).then((res) => res.json()).then((data) => { 
         if(data["result"] == "success"){
             Swal.fire({
@@ -115,32 +112,28 @@ function checkPassword(id, password1, password2) {
 }
 // 아이디중복확인
 async function useridchek(userid) {
-    let result = true;
     let formData = new FormData();  
     formData.append("userid", userid);
-    fetch("/auth/useridcheck", { method: "POST", body: formData })
-        .then((res) => res.json())
-        .then((data) => { 
-            if(data['result'] == true){
-                $('#idError').text('사용가능한 아이디 입니다.');
-                $('#idError').css("color","green");                                          
-                result = true;
-            }else{
-                $('#idError').text('사용중인 아이디 입니다.');
-                result = false;
-            }
-        });
-        console.log(result)
-        return result;
+
+    var idcheck = await fetch('/auth/useridcheck',{ method: "POST", body: formData });
+    var data = await idcheck.json();
+    console.log(data['result'])
+    if(data['result'] == true){
+        $('#idError').text('사용가능한 아이디 입니다.');
+        $('#idError').css("color","green");                                
+        return true;
+    }else{
+        $('#idError').text('사용중인 아이디 입니다.');
+        $('#idError').css("color","red");  
+        return false;
+    }
 }
 // 회원 탈퇴
 function deleteUser() {
-
     fetch("/auth/delete")
         .then((res) => res.json())
         .then((data) => {
             alert(data['msg'])
             location.href = "/"
-
         });
 }

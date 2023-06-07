@@ -3,7 +3,7 @@ import os
 from pymongo import MongoClient
 
 import datetime as dt
-
+from bson.objectid import ObjectId
 import hashlib
 
 dotenv.load_dotenv()
@@ -23,28 +23,13 @@ app.secret_key = os.getenv("OurKey") #가려야함
 # 시작 페이지
 @app.route('/')
 def home():
-
     return redirect("/auth/login")
-
-    #return render_template('index.html')
-    #환영페이지 필요없으면
-    #return redirect("/login")
 
 # 로그인페이지(GET)
 @app.route('/auth/login', methods=['GET', 'POST'])
 def login():
 
     if request.method == 'GET':
-        #title_receive = request.args.get('title_give') title_give라는 데이터를 가지고옴
-        next = request.args.get('next', '') # login 후 이동할 페이지 지정
-
-        user_list = list(db.user.find({}))
-        if len(user_list) == 0:
-            print('없음')
-        else :
-            for i in user_list:
-                print(i)
-
         return render_template('index.html') #jsonify({'result':'success', 'msg': '이 요청은 GET!'}), 
     else :
         # 로그인페이지(POST)
@@ -55,10 +40,9 @@ def login():
 
         doc = {"userid": userid_receive, "userpw": pw_hash}
         user = db.user.find_one(doc, {'_id':False})
-        print("넘어왔나?", user)
         if user != None:
             session['loginUserId'] = user['userid']
-            print(session.get('loginUserId'))    #>> 세션 저장 확인
+            session['loginUserName'] = user['username']
             result = True
             msg = f"{user['username']}님 환영합니다"
         else:
@@ -86,7 +70,7 @@ def logout():
 
 # 회원가입(POST)
 @app.route('/auth/register', methods=['POST'])
-def loginregister():
+def loginRegister():
     userid_receive = request.form['userid']
     userpw_receive = request.form['userpw']
     username_receive = request.form['username']
@@ -131,64 +115,113 @@ def deleteId():
 
 # 게시판 목록
 @app.route('/board/list', methods=['GET'])
-def boardlist():
+def boardList():
     # title_receive = request.form['title_give']
     # all_favorites = list(db.favorites.find({},{'_id':False}))
     # return jsonify({'result':all_favorites})
     return render_template('main.html')
 
+
+# 게시판 목록 불러오기
 @app.route('/list', methods=['GET'])
-def getlist():
+def getList():
     # title_receive = request.form['title_give']
-    all_favorites = list(db.favorites.find({},{'_id':False}))
+    all_favorites = list(db.favorites.find({}))
+    for comment in all_favorites:
+        comment['_id'] = str(comment['_id']) 
+
     return jsonify({'result':all_favorites})
     
 
 
 # 게시판 조회 (상세페이지)
 @app.route('/board/detail', methods=['GET'])
-def boarddetail():
-    #title_receive = request.form['title_give']
-    return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
+def boardDetail():
+    num_receive = request.args.get('num')
+    board_write = db.favorites.find_one({'_id':ObjectId(num_receive)}) # board_write 에 대한 dictionary {"userid": ~~, "address": ~~, "star": "4", ....}
+    starNum = int(board_write['star']) # "4" > 숫자 4
+    board_write['_id'] = str(board_write['_id'])
+    return render_template('detail.html',context= board_write, context2=starNum)
 
 
-# 게시판 글생성(POST)
-@app.route("/board/create", methods=["POST"])
-def mars_post():
-    title_receive = request.form['title_give']
-    address_receive = request.form['address_give']
-    star_receive = request.form['star_give']
-    comment_receive = request.form['comment_give']
-    createday = dt.datetime.now().replace(microsecond=0)
-    
-    
-    doc = {
-        'title':title_receive,
-        'address':address_receive,
-        'star':star_receive,
-        'comment':comment_receive,
-        'date':createday
+# 게시판 조회 (상세페이지)
+# @app.route('/board/detail', methods=['POST'])
+# def boarddetail():
+#     num_receive = request.form['num']
+#     print("POST : ", num_receive)
+#     user = db.favorites.find_one({'num':num_receive})
+#     # print(type(user))
+#     return render_template('datail.html',context=user)
+
+
+# 게시판 글생성(POST) # 게시판 글생성(GET)
+@app.route("/board/create", methods=["GET","POST"])
+def boardCreate():
+    if request.method == "GET":
+        all_favorites = list(db.favorites.find({},{'_id':False}))
+        return render_template('post.html')
+    elif request.method == "POST":
+        title_receive = request.form['title_give']
+        address_receive = request.form['address_give']
+        star_receive = request.form['star_give']
+        comment_receive = request.form['comment_give']
+        imgurl_receive = request.form['imgurl_give']
+        userid = session.get('loginUserId')
         
-    }
-    db.favorites.insert_one(doc) 
+        createday = dt.datetime.now().replace(microsecond=0)
+        
+        doc = {
+            'title':title_receive,
+            'address':address_receive,
+            'star':star_receive,
+            'comment':comment_receive,
+            'imgurl':imgurl_receive,
+            'date':createday,
+            'userid' : userid
+        }
+        db.favorites.insert_one(doc) 
 
-    return jsonify({'msg':'저장완료!'})
+        return jsonify({'msg':'저장완료!'})
 
-# 게시판 글생성(GET)
-@app.route("/board/create", methods=["GET"])
-def mars_get():
-    all_favorites = list(db.favorites.find({},{'_id':False}))
-    return render_template('post.html')
     
 # 게시판 글수정
 @app.route('/board/update', methods=['POST','GET']) 
-def boardupdate():
-    #title_receive = request.form['title_give']
+def boardUpdate():
+    
     if request.method == 'POST':
-        return jsonify({'result':'success', 'msg': '이 요청은 POST!'})
+        num_receive = request.form['num_give']
+        title_receive = request.form['title_give']
+        address_receive = request.form['address_give']
+        star_receive = request.form['star_give']
+        comment_receive = request.form['comment_give']
+        imgurl_receive = request.form['imgurl_give']
+
+        db.favorites.update_one({'_id':ObjectId(num_receive)},{'$set': { 'title' : title_receive,
+                                                                        'address' : address_receive,
+                                                                        'star' : star_receive,
+                                                                        'comment' : comment_receive,
+                                                                        'imgurl' : imgurl_receive}})
+        
+        return jsonify({'result':'success', 'msg': '수정 완료'})
 
     if request.method == 'GET':
-        return jsonify({'result':'success', 'msg': '이 요청은 GET!'})
+        num_receive = request.args.get('num') # ObjectId
+        board_write = db.favorites.find_one({'_id':ObjectId(num_receive)})
+        board_write['_id'] = str(board_write['_id'])
+        starNum = int(board_write['star'])
 
+        return render_template("update.html", context=board_write, context2=starNum)
+    
+
+# 게시판 글 삭제
+@app.route('/board/delete', methods=['POST'])
+def boardDelete():
+    #boardNumber = request.form['boardNumber']
+    boardNumber = request.get_json()
+    
+    db.favorites.delete_one({"_id":ObjectId(boardNumber['boardNumber'])})
+
+    return jsonify({"result":'삭제완료!'})
+    
 if __name__ == '__main__':  
     app.run('0.0.0.0',port=5001,debug=True)

@@ -3,12 +3,12 @@
 <html class="home blog no-js" lang="en-US">
 
 <head>
-
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <script src="/static/auth/login.js"></script>
 
-  <title>MAT.ZIP | CREATE</title>
+  <title>MAT.ZIP | UPDATE</title>
 
   <style>
     .mypost {
@@ -33,32 +33,34 @@
 
   <script>
     $(document).ready(function () {
-      listing();
-    });
+            // listing();
+
+        });
 
 
 
-    // POST
-    function save_order() {
-      let title = $('#title').val()
-      let address = $('#address').val()
-      let star = $('#star').val()
-      let comment = $('#comment').val()
-      let imgurl = $('#imgurl').val()
+      // POST
+      function update_order() {
+          let title = $('#title').val() 
+          let address = $('#address').val() 
+          let star= $('#star').val()
+          let comment = $('#comment').val()
+          let imgurl = $('#imgurl').val()
+          
+          let formData = new FormData();
+          formData.append("num_give", '{{context._id}}')
+          formData.append("title_give", title)
+          formData.append("address_give", address)
+          formData.append("star_give", star)
+          formData.append("comment_give", comment)
+          formData.append('imgurl_give', imgurl)
 
-      let formData = new FormData();
-      formData.append("title_give", title)
-      formData.append("address_give", address)
-      formData.append("star_give", star)
-      formData.append("comment_give", comment)
-      formData.append('imgurl_give', imgurl)
-
-      fetch('/board/create', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-        alert(data["msg"]);
-        location.href = '/board/list'
-      });
-    }
-  </script>
+          fetch('/board/update', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+              alert(data["msg"]);
+              location.href = '/board/detail?num={{context._id}}'
+          });
+      }
+    </script>
 
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -88,7 +90,7 @@
   {% include 'header.html' %}
 
   <div class="home-sticky" id="content">
-    <h2 class="home-sticky-title">P O S T I N G</h2>
+    <h2 class="home-sticky-title">U P D A T E</h2>
   </div>
 
   <div class="mypost">
@@ -98,18 +100,18 @@
       <div class="order-info">
 
         <div class="input-group mb-3">
-          <span class="input-group-text">맛집 이름</span>
-          <input id="title" type="text" class="form-control" />
+          <span class="input-group-text">이름</span>
+          <input id="title" type="text" class="form-control" value="{{context.title}}"/>
         </div>
 
         <div class="input-group mb-3">
           <span class="input-group-text">위치 정보</span>
-          <input id="address" type="text" class="form-control" />
+          <input id="address" type="text" class="form-control" value="{{context.address}}"/>
         </div>
 
         <div class="input-group mb-3">
           <span class="input-group-text">이미지 URL</span>
-          <input id="imgurl" type="text" class="form-control" />
+          <input id="imgurl" type="text" class="form-control" value="{{context.imgurl}}"/>
         </div>
 
         <div class="input-group mb-3">
@@ -126,7 +128,7 @@
 
         <div class="form-floating">
           <label for="floatingTextarea2">코멘트</label>
-          <textarea id="comment" class="form-control" placeholder="Leave a comment here"></textarea>
+          <textarea id="comment" class="form-control" placeholder="Leave a comment here" >{{context.comment}}</textarea>
         </div>
 
       </div>
@@ -134,8 +136,8 @@
     </div>
 
     <div class="mybtn">
-      <button onclick="save_order()" type="button" class="btn btn-warning mybtn">
-        기록하기
+      <button onclick="update_order()" type="button" class="btn btn-warning mybtn">
+        수정 완료
       </button>
     </div>
 

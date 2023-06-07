@@ -1,0 +1,54 @@
+{% if session['loginUserId'] == NULL %}
+<script>
+  alert("로그인 후 이용하세요") // 응 나가~
+  location.href="/"
+</script>
+{% endif %}
+<header class="header">
+  <div class="header-wrap">
+    <div class="logo plain logo-left">
+      <div class="site-title">
+        <a href="/board/list" title="Go to Home">MAT.ZIP</a>
+      </div>
+    </div>
+    <!-- /logo -->
+
+    <nav id="nav" role="navigation">
+      <div class="table">
+        <div class="table-cell">
+          <ul id="menu-menu-1">
+            <li class="menu-item">
+              {{ session['loginUserName'] }}님 환영합니다~
+            </li>
+            <li class="menu-item">
+              <a href="/board/list">Home</a>
+            </li>
+            <li class="menu-item">
+              <a href="/board/create">Create</a>
+            </li>
+            <!-- 로그아웃 입니다. -->
+            <li class="menu-item">
+              <a href="javascript:userLogout();">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <a href="#nav" class="menu-trigger"><i class="fa fa-bars"></i></a>
+  </div>
+</header>
+
+<div class="hero" style="background-image: url('images/lead.jpg'); text-align: right">
+  <div class="hero-inner">
+    <div class="inner">
+      <h1><span class="border border-top border-bottom">MAT.ZIP</span></h1>
+      <div class="hero-line-one"></div>
+      <div class="hero-line-two">
+        <span class="border border-bottom"><a href="https://freehtml5.co" style="color: #fff">Introduce t best taste!
+          </a></span>
+      </div>
+    </div>
+
+    <a class="more-arrow" href="#content"><i class="fa fa-chevron-down"></i><span>Scroll Down</span></a>
+  </div>
+</div>

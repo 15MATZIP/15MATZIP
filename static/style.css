@@ -221,7 +221,7 @@ em, i {
 
 img {
   max-width: 100%;
-  height: auto;
+  /* height: auto; */
 }
 
 * {
@@ -3694,3 +3694,4 @@ header.header nav,
 }
 
 /*# sourceMappingURL=style.css.map */
+

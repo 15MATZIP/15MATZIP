@@ -81,4 +81,4 @@ python app.py
 
 ## 링크
 
-링크 : [MAT.ZIP](myweb2.eba-khfwacxb.ap-northeast-2.elasticbeanstalk.com)
+링크 : [MAT.ZIP](http://myweb2.eba-khfwacxb.ap-northeast-2.elasticbeanstalk.com)

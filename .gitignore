@@ -1,4 +1,6 @@
 venv/
 .env
+deploy/
+
 
 .DS_Store

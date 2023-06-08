@@ -46,7 +46,16 @@
           let star= $('#star').val()
           let comment = $('#comment').val()
           let imgurl = $('#imgurl').val()
-          
+          if(star == null || star == ""){
+            Swal.fire({
+              icon: 'erorr',    
+              timerProgressBar: true,   
+              showConfirmButton: false,    
+              title: "별점을 주세요!", 
+              timer: 1000,   
+            })
+            return;
+          }
           let formData = new FormData();
           formData.append("num_give", '{{context._id}}')
           formData.append("title_give", title)
@@ -56,8 +65,15 @@
           formData.append('imgurl_give', imgurl)
 
           fetch('/board/update', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-              alert(data["msg"]);
-              location.href = '/board/detail?num={{context._id}}'
+              Swal.fire({
+                icon: 'erorr',    
+                timerProgressBar: true,   
+                showConfirmButton: false,    
+                title: data["msg"], 
+                timer: 1000,   
+              }).then(function(){
+                location.href = '/board/detail?num={{context._id}}'
+              });
           });
       }
     </script>
@@ -117,7 +133,7 @@
         <div class="input-group mb-3">
           <label class="input-group-text" for="inputGroupSelect01">&nbsp;&nbsp;⭐&nbsp;&nbsp;</label>
           <select class="form-select" id="star">
-            <option selected>-- 이 집의 ⭐은! --</option>
+            <option value="" selected>-- 이 집의 ⭐은! --</option>
             <option value="1">⭐</option>
             <option value="2">⭐⭐</option>
             <option value="3">⭐⭐⭐</option>

@@ -80,8 +80,16 @@
             let formData = new FormData();
             formData.append("num", num);
             fetch('/board/detail', { method: "POST", body: formData}).then((response) => response.json()).then((data) => {
-                alert(data["msg"]);
-                window.location.reload();
+                Swal.fire({
+                  icon: 'erorr',    
+                  timerProgressBar: true,   
+                  showConfirmButton: false,    
+                  title: data["msg"], 
+                  timer: 1000,   
+                }).then(function(){
+                  window.location.reload();
+                });
+
             });
         }
   </script>

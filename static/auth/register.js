@@ -26,12 +26,11 @@ async function loginregister() {
         if(data["result"] == "success"){
             Swal.fire({
                 icon: 'success',            
-                title: '가입 완료!',         
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });                  
+                title: '가입 완료!',    
+                timer: 1000,     
+            }).then(function(){
+                window.location.reload();
+            });              
         }else{
             Swal.fire({
                 icon: 'error',             
@@ -128,6 +127,7 @@ async function useridchek(userid) {
         return false;
     }
 }
+
 // 회원 탈퇴
 function deleteUser() {
     fetch("/auth/delete")

@@ -1,7 +1,14 @@
 {% if session['loginUserId'] == NULL %}
 <script>
-  alert("로그인 후 이용하세요") // 응 나가~
-  location.href="/"
+  Swal.fire({
+    icon: 'erorr',    
+    timerProgressBar: true,   
+    showConfirmButton: false,    
+    title: '로그인 후 이용하세요', 
+    timer: 1000,   
+}).then(function(){
+  location.href = "/"
+});
 </script>
 {% endif %}
 <header class="header">

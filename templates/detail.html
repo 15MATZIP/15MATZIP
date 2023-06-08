@@ -30,12 +30,6 @@
       margin-top: 20px;
     }
   </style>
-  {% if session['loginUserId'] == NULL %}
-  <script>
-    alert("로그인 후 이용하세요") // 응 나가~
-    location.href = "/"
-  </script>
-  {% endif %}
   <script>
     $(document).ready(function () {
       let repeatNum = '{{context2 | int}}';
@@ -81,8 +75,15 @@
       formData.append("comment_give", comment)
 
       fetch('/board/create', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-        alert(data["msg"]);
+        Swal.fire({
+          icon: 'erorr',    
+          timerProgressBar: true,   
+          showConfirmButton: false,    
+          title: data["msg"], 
+          timer: 1000,   
+      }).then(function(){
         location.href = '/board/list'
+      });
       });
     }
     // 수정
@@ -167,7 +168,7 @@
 
     </div>
     <div class="mybtn">
-      <button onclick="history.back()" type="button" class="btn btn-warning mybtn">
+      <button onclick="javascript:location.href = '/board/list'" type="button" class="btn btn-warning mybtn">
         뒤로가기
       </button>
       {% if session['loginUserId'] == context.userid %}

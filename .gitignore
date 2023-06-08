@@ -2,5 +2,5 @@ venv/
 .env
 deploy/
 
-
+.vscode/
 .DS_Store
